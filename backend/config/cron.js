@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import axios from "axios";
 
-const URL = "https://bookmarkassignmentx.onrender.com/api";
+const URL = "https://bookmarkassignmentx.onrender.com";
 
 cron.schedule("*/5 * * * *", async () => {
   try {
