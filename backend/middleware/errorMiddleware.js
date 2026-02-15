@@ -1,23 +1,26 @@
 // middleware/errorMiddleware.js — Centralized Error Handling
-export const notFound = (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route not found: ${req.method} ${req.originalUrl}`,
-  });
+// IMPORTANT: Express identifies error handlers by exactly 4 parameters.
+// Do NOT remove any parameter — even unused ones — or Express skips this middleware.
+
+export const notFound = (req, res, next) => {
+  const err = new Error(`Route not found: ${req.method} ${req.originalUrl}`);
+  err.status = 404;
+  next(err);
 };
 
-export const errorHandler = (err, _req, res, _next) => {
+// eslint-disable-next-line no-unused-vars
+export const errorHandler = (err, req, res, next) => {
   let status = err.status || err.statusCode || 500;
   let message = err.message || "Internal Server Error";
-  let errors = undefined;
+  let errors;
 
-  // Mongoose: bad ObjectId (e.g. /bookmarks/bad-id)
+  // Mongoose: bad ObjectId (e.g. DELETE /bookmarks/bad-id)
   if (err.name === "CastError") {
     status = 400;
-    message = `Invalid ID format: ${err.value}`;
+    message = `Invalid ID format: "${err.value}"`;
   }
 
-  // Mongoose: schema validation error
+  // Mongoose: schema validation failed
   if (err.name === "ValidationError") {
     status = 400;
     message = "Validation failed";
@@ -27,11 +30,11 @@ export const errorHandler = (err, _req, res, _next) => {
     }));
   }
 
-  // Mongoose: duplicate key (unique index violation)
+  // Mongoose: duplicate unique key
   if (err.code === 11000) {
     status = 409;
     const field = Object.keys(err.keyValue || {})[0] || "field";
-    message = `Duplicate value for ${field}`;
+    message = `Duplicate value for "${field}"`;
   }
 
   console.error(`[Error] ${status} — ${message}`);

@@ -1,6 +1,4 @@
 // models/Bookmark.js — MODEL LAYER (Mongoose)
-// Owns: schema definition, field-level validation, indexes,
-//       instance/static methods, middleware hooks
 import mongoose from "mongoose";
 
 const bookmarkSchema = new mongoose.Schema(
@@ -47,9 +45,7 @@ const bookmarkSchema = new mongoose.Schema(
     },
   },
   {
-    // Mongoose auto-manages createdAt & updatedAt
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
-    // Clean up __v from responses
     toJSON: {
       virtuals: true,
       transform: (_doc, ret) => {
@@ -64,20 +60,20 @@ const bookmarkSchema = new mongoose.Schema(
 );
 
 // ── Indexes ────────────────────────────────────────────────────────────────────
-bookmarkSchema.index({ tags: 1 });                // fast tag filtering
-bookmarkSchema.index({ createdAt: -1 });          // default sort
-bookmarkSchema.index(                             // text search
+bookmarkSchema.index({ tags: 1 });
+bookmarkSchema.index({ createdAt: -1 });
+bookmarkSchema.index(
   { title: "text", description: "text", url: "text" },
   { weights: { title: 3, description: 1, url: 2 }, name: "bookmark_text_idx" }
 );
 
-// ── Pre-save: normalize tags ────────────────────────────────────────────────────
-bookmarkSchema.pre("save", function (next) {
+// ── Pre-save: normalize tags ───────────────────────────────────────────────────
+// Mongoose 8: use async pre-save instead of next() callback (next is deprecated)
+bookmarkSchema.pre("save", async function () {
   this.tags = [...new Set(this.tags.map((t) => t.trim().toLowerCase()))];
-  next();
 });
 
-// ── Static: find by tag ─────────────────────────────────────────────────────────
+// ── Static: find by tag ────────────────────────────────────────────────────────
 bookmarkSchema.statics.findByTag = function (tag) {
   return this.find({ tags: tag }).sort({ createdAt: -1 });
 };
