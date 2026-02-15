@@ -1,4 +1,3 @@
-// src/context/ThemeContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext(null);
@@ -11,7 +10,7 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    document.body.classList.toggle("dark", dark);
+    document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("bm-theme", dark ? "dark" : "light");
   }, [dark]);
 

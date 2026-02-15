@@ -1,4 +1,3 @@
-// src/components/BookmarkCard.jsx
 import { useState } from "react";
 import { ExternalLink, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useDeleteBookmark } from "../hooks/useBookmarks.jsx";
