@@ -1,4 +1,4 @@
-// models/Bookmark.js — MODEL LAYER (Mongoose)
+
 import mongoose from "mongoose";
 
 const bookmarkSchema = new mongoose.Schema(
@@ -59,7 +59,6 @@ const bookmarkSchema = new mongoose.Schema(
   }
 );
 
-// ── Indexes ────────────────────────────────────────────────────────────────────
 bookmarkSchema.index({ tags: 1 });
 bookmarkSchema.index({ createdAt: -1 });
 bookmarkSchema.index(
@@ -67,13 +66,10 @@ bookmarkSchema.index(
   { weights: { title: 3, description: 1, url: 2 }, name: "bookmark_text_idx" }
 );
 
-// ── Pre-save: normalize tags ───────────────────────────────────────────────────
-// Mongoose 8: use async pre-save instead of next() callback (next is deprecated)
+
 bookmarkSchema.pre("save", async function () {
   this.tags = [...new Set(this.tags.map((t) => t.trim().toLowerCase()))];
 });
-
-// ── Static: find by tag ────────────────────────────────────────────────────────
 bookmarkSchema.statics.findByTag = function (tag) {
   return this.find({ tags: tag }).sort({ createdAt: -1 });
 };

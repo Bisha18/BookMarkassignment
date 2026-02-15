@@ -9,7 +9,7 @@ import { apiLimiter } from "./middleware/rateLimitMiddleware.js";
 
 const app = express();
 
-// ── Core Middleware ────────────────────────────────────────────────────────────
+
 app.use(cors({
    origin:"*"
 }));
@@ -20,19 +20,19 @@ if (process.env.NODE_ENV !== "test") {
   app.use(morgan("dev"));
 }
 
-// ── Rate Limiting ──────────────────────────────────────────────────────────────
+
 app.use("/api", apiLimiter);
 
-// ── Routes ────────────────────────────────────────────────────────────────────
+
 app.use("/api/bookmarks", bookmarkRoutes);
 
-// ── Health Check ──────────────────────────────────────────────────────────────
+
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", db: "mongodb", timestamp: new Date().toISOString() });
 });
 
-// ── Error Handlers — must be LAST, after all routes ───────────────────────────
+
 app.use(notFound);
-app.use(errorHandler);   // 4-param signature: (err, req, res, next)
+app.use(errorHandler);
 
 export default app;

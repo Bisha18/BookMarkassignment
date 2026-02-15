@@ -1,4 +1,3 @@
-// middleware/validationMiddleware.js
 import { body } from "express-validator";
 
 const urlRule = (optional = false) => {
@@ -15,7 +14,7 @@ const urlRule = (optional = false) => {
 
 const titleRule = (optional = false) => {
   const f = body("title");
-  const base = optional ? f.optional() : f; // title optional on create — auto-fetched
+  const base = optional ? f.optional() : f;
   return base
     .optional()
     .isLength({ max: 200 })

@@ -1,4 +1,4 @@
-// src/pages/BookmarksPage.jsx
+
 import { useState, useMemo } from "react";
 import {
   Search, Plus, SunMedium, Moon, Bookmark,
@@ -9,7 +9,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import BookmarkCard from "../components/BookmarkCard.jsx";
 import BookmarkForm from "../components/BookmarkForm.jsx";
 
-// ── Skeleton ───────────────────────────────────────────────────────────────────
+
 const Skeleton = () => (
   <div className="bg-white dark:bg-[var(--color-dark-surface)] border border-[var(--color-paper-3)] dark:border-[var(--color-dark-border)] rounded-xl p-5 animate-pulse">
     <div className="flex items-center gap-2 mb-3">
@@ -26,7 +26,7 @@ const Skeleton = () => (
   </div>
 );
 
-// ── Input base class ───────────────────────────────────────────────────────────
+
 const inputCls = [
   "px-4 py-2.5 rounded-xl border text-sm outline-none transition-all",
   "bg-white dark:bg-[var(--color-dark-surface)]",
@@ -37,21 +37,21 @@ const inputCls = [
   "focus:ring-2 focus:ring-[var(--color-ink)]/5",
 ].join(" ");
 
-// ── Page ───────────────────────────────────────────────────────────────────────
+
 export default function BookmarksPage() {
   const { dark, toggle } = useTheme();
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState("");
   const [showForm, setShowForm] = useState(false);
 
-  // Server-side: tag filter. Client-side: search text.
+
   const { data, isLoading, isError, error, refetch } = useBookmarks(
     activeTag ? { tag: activeTag } : {}
   );
 
   const bookmarks = data?.bookmarks ?? [];
 
-  // Real-time client search over title + url + description
+
   const filtered = useMemo(() => {
     if (!search.trim()) return bookmarks;
     const q = search.toLowerCase();
@@ -63,7 +63,7 @@ export default function BookmarksPage() {
     );
   }, [bookmarks, search]);
 
-  // Collect all tags from currently loaded bookmarks
+
   const allTags = useMemo(() => {
     const set = new Set();
     bookmarks.forEach((b) => b.tags.forEach((t) => set.add(t)));
@@ -86,11 +86,11 @@ export default function BookmarksPage() {
   return (
     <div className="min-h-screen bg-[var(--color-paper)] dark:bg-[var(--color-dark-bg)] transition-colors">
 
-      {/* ── Header ── */}
+
       <header className="sticky top-0 z-40 border-b border-[var(--color-paper-3)] dark:border-[var(--color-dark-border)] bg-[var(--color-paper)]/90 dark:bg-[var(--color-dark-bg)]/90 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center gap-4">
 
-          {/* Brand */}
+
           <div className="flex items-center gap-2.5 shrink-0">
             <div className="w-7 h-7 rounded-lg bg-[var(--color-ink)] dark:bg-[var(--color-dark-text)] flex items-center justify-center">
               <Bookmark size={14} className="text-[var(--color-paper)] dark:text-[var(--color-ink)]" strokeWidth={2.5} />
@@ -104,7 +104,7 @@ export default function BookmarksPage() {
             </div>
           </div>
 
-          {/* Search */}
+
           <div className="flex-1 relative max-w-sm">
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-ink-4)] pointer-events-none" />
             <input
@@ -139,10 +139,10 @@ export default function BookmarksPage() {
         </div>
       </header>
 
-      {/* ── Main ── */}
+
       <main className="max-w-5xl mx-auto px-6 py-8">
 
-        {/* Tag filter bar */}
+
         {allTags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <div className="flex items-center gap-1.5 text-xs text-[var(--color-ink-4)] dark:text-[var(--color-dark-text-2)] mr-1">
@@ -174,14 +174,14 @@ export default function BookmarksPage() {
           </div>
         )}
 
-        {/* Result count */}
+
         {!isLoading && !isError && (
           <p className="text-xs text-[var(--color-ink-4)] dark:text-[var(--color-dark-text-2)] mb-5">
             {summaryText()}
           </p>
         )}
 
-        {/* Error state */}
+
         {isError && (
           <div className="flex flex-col items-center gap-4 py-20 text-center">
             <div className="w-12 h-12 rounded-full bg-[var(--color-danger-light)] flex items-center justify-center">
@@ -205,14 +205,14 @@ export default function BookmarksPage() {
           </div>
         )}
 
-        {/* Loading skeleton */}
+
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}
           </div>
         )}
 
-        {/* Empty state */}
+
         {!isLoading && !isError && filtered.length === 0 && (
           <div className="flex flex-col items-center gap-4 py-20 text-center">
             <div className="w-14 h-14 rounded-2xl bg-[var(--color-paper-2)] dark:bg-[var(--color-dark-surface)] flex items-center justify-center">
@@ -240,7 +240,7 @@ export default function BookmarksPage() {
           </div>
         )}
 
-        {/* Bookmark grid */}
+
         {!isLoading && !isError && filtered.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((bm) => (

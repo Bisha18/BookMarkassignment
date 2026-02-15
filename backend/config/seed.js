@@ -1,5 +1,3 @@
-// config/seed.js — Seed MongoDB with sample bookmarks
-// Run: npm run seed
 import "dotenv/config";
 import mongoose from "mongoose";
 import connectDB from "./db.js";

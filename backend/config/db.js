@@ -1,4 +1,3 @@
-// config/db.js — MongoDB Connection via Mongoose
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -12,7 +11,6 @@ const connectDB = async () => {
   }
 };
 
-// Graceful disconnect on app shutdown
 process.on("SIGINT", async () => {
   await mongoose.connection.close();
   console.log("[DB] MongoDB connection closed (SIGINT)");

@@ -1,16 +1,11 @@
-// controllers/bookmarkController.js — CONTROLLER LAYER
 import { validationResult } from "express-validator";
 import Bookmark from "../models/Bookmark.js";
 import { fetchPageTitle } from "../services/metaFetcher.js";
 
-// ── Helper: format Mongoose validation errors ──────────────────────────────────
 const formatMongooseErrors = (err) =>
   Object.values(err.errors).map((e) => ({ field: e.path, msg: e.message }));
 
-/**
- * GET /api/bookmarks
- * Query: ?tag=value  ?search=text  ?page=1  ?limit=20
- */
+
 export const getBookmarks = async (req, res) => {
   const { tag, search, page = 1, limit = 20 } = req.query;
 
@@ -36,9 +31,6 @@ export const getBookmarks = async (req, res) => {
   });
 };
 
-/**
- * GET /api/bookmarks/:id
- */
 export const getBookmark = async (req, res) => {
   const bookmark = await Bookmark.findById(req.params.id);
   if (!bookmark) {
@@ -79,10 +71,6 @@ export const createBookmark = async (req, res) => {
   }
 };
 
-/**
- * PUT /api/bookmarks/:id
- * Partial update
- */
 export const updateBookmark = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -120,9 +108,6 @@ export const updateBookmark = async (req, res) => {
   }
 };
 
-/**
- * DELETE /api/bookmarks/:id
- */
 export const deleteBookmark = async (req, res) => {
   const bookmark = await Bookmark.findByIdAndDelete(req.params.id);
   if (!bookmark) {
@@ -135,9 +120,6 @@ export const deleteBookmark = async (req, res) => {
   });
 };
 
-/**
- * GET /api/bookmarks/fetch-title?url=...
- */
 export const fetchTitle = async (req, res) => {
   const { url } = req.query;
   if (!url) {
