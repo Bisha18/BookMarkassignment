@@ -1,6 +1,4 @@
-// routes/bookmarkRoutes.js — ROUTE LAYER
-// Maps HTTP verb + path → validation middleware → controller
-// Zero business logic — pure wiring only
+
 import { Router } from "express";
 import {
   getBookmarks,

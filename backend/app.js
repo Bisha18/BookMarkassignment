@@ -1,7 +1,5 @@
-// app.js — Express Application
-// express-async-errors must be imported first — it patches Express's router
-// so any async route that throws will automatically call next(err)
-import "express-async-errors";
+
+import "express-async-error";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -13,9 +11,7 @@ const app = express();
 
 // ── Core Middleware ────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3000"],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
+   origin:"*"
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
